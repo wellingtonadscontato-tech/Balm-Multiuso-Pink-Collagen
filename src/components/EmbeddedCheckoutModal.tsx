@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import {
   X,
   Truck,
@@ -28,6 +28,7 @@ interface CheckoutConfig {
   isShopifyConfigured: boolean;
   shopifyDomain: string;
   shopifyFallbackEnabled: boolean;
+  mode?: 'test' | 'live';
 }
 
 export const EmbeddedCheckoutModal: React.FC = () => {
@@ -39,6 +40,16 @@ export const EmbeddedCheckoutModal: React.FC = () => {
   const [fetchError, setFetchError] = useState<string | null>(null);
   const [isCompleted, setIsCompleted] = useState(false);
   const [completedSessionId, setCompletedSessionId] = useState<string | null>(null);
+  const sessionRef = useRef<{ id: string; token: string } | null>(null);
+  const [confirming, setConfirming] = useState(false);
+  useEffect(() => {
+    if (!isCheckoutModalOpen) {
+      sessionRef.current = null;
+      setIsCompleted(false);
+      setConfirming(false);
+      setFetchError(null);
+    }
+  }, [isCheckoutModalOpen]);
 
   // Load public checkout configuration on mount
   useEffect(() => {
@@ -77,6 +88,7 @@ export const EmbeddedCheckoutModal: React.FC = () => {
       if (!res.ok || !data.clientSecret) {
         throw new Error(data.message || 'Failed to initialize Stripe checkout session.');
       }
+      sessionRef.current = { id: data.sessionId, token: data.verificationToken };
       return data.clientSecret;
     } catch (err) {
       setFetchError((err as Error).message);
@@ -84,8 +96,20 @@ export const EmbeddedCheckoutModal: React.FC = () => {
     }
   }, [items]);
 
-  const handleComplete = useCallback(() => {
-    setFetchError("Payment confirmation is pending. Please contact support if needed.");
+  const handleComplete = useCallback(async () => {
+    const session = sessionRef.current;
+    if (!session) return;
+    setConfirming(true);
+    try {
+      const response = await fetch(`/api/checkout/session-status?session_id=${encodeURIComponent(session.id)}`, {
+        headers: { 'X-Checkout-Token': session.token },
+      });
+      const result = await response.json();
+      if (!response.ok || result.paymentStatus !== 'paid') throw new Error('Payment confirmation is pending. Please contact support before trying again.');
+      setCompletedSessionId(session.id);
+      setIsCompleted(true);
+    } catch (error) { setFetchError((error as Error).message); }
+    finally { setConfirming(false); }
   }, []);
 
   if (!isCheckoutModalOpen) return null;
@@ -285,10 +309,10 @@ export const EmbeddedCheckoutModal: React.FC = () => {
                   <CheckCircle2 className="w-8 h-8 stroke-[2.5]" />
                 </div>
                 <h4 className="text-2xl font-extrabold text-stone-900 mb-2">
-                  Payment Completed!
+                  {config?.mode === 'test' ? 'Test payment completed' : 'Payment Completed!'}
                 </h4>
                 <p className="text-sm text-stone-600 mb-6">
-                  Thank you for your order. Your payment was securely verified, and your order has been received for shipping preparation.
+                  {config?.mode === 'test' ? 'This was a test transaction. No real payment was collected and no product will be shipped.' : 'Your payment was verified. Thank you for your order.'}
                 </p>
                 <button
                   type="button"
@@ -301,6 +325,8 @@ export const EmbeddedCheckoutModal: React.FC = () => {
             ) : config?.isConfigured && stripePromise && !fetchError ? (
               /* Official Stripe Embedded Checkout */
               <div className="w-full">
+                {config.mode === 'test' && <p className="mb-4 rounded-xl bg-amber-50 p-3 text-sm text-amber-900">Test checkout — no real charges or shipments.</p>}
+                {confirming && <p role="status" className="mb-3 text-sm">Confirming your payment…</p>}
                 <EmbeddedCheckoutProvider
                   stripe={stripePromise}
                   options={{
@@ -314,7 +340,7 @@ export const EmbeddedCheckoutModal: React.FC = () => {
             ) : (
               <div className="text-left space-y-4">
                 <h4 className="text-xl font-bold text-stone-900">Online checkout is temporarily unavailable</h4>
-                <p className="text-sm text-stone-600">Please contact us for assistance. No payment has been collected.</p>
+                <p className="text-sm text-stone-600">{fetchError || 'Please contact us for assistance. No payment has been collected.'}</p>
                 <a href="mailto:contato@balmmultiusopinkcollagen.shop" className="text-rose-700 underline break-all">contato@balmmultiusopinkcollagen.shop</a>
               </div>
             )}
