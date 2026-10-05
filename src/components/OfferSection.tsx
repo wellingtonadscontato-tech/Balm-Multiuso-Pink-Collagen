@@ -7,7 +7,7 @@ import React, { useState } from 'react';
 import { Truck } from 'lucide-react';
 import { productConfig } from '../config/productConfig';
 import { useCart } from '../context/CartContext';
-const fallbackProductImg = 'https://lpgzamgqjcoicmostfln.supabase.co/storage/v1/object/public/product-artwork/product-isolated.png';
+
 
 export const OfferSection: React.FC = () => {
   const { addItem, openDrawer } = useCart();
@@ -20,28 +20,19 @@ export const OfferSection: React.FC = () => {
     addItem(tierId);
   };
 
-  // Helper component to render physical isolated product sticks
+  // Each bundle uses one compact product image, avoiding gaps between separate files.
   const renderSticks = (count: number) => {
+    const filename = count === 1 ? 'product-isolated.png' : `product-kit-${count}.png`;
+    const fallback = `https://lpgzamgqjcoicmostfln.supabase.co/storage/v1/object/public/product-artwork/${filename}`;
     return (
-      <div className="flex items-center justify-center gap-0 h-60 sm:h-64 py-0 my-2">
-        {Array.from({ length: count }).map((_, i) => (
-          <img
-            key={i}
-            src="/assets/product-isolated.png"
-            onError={(e) => {
-              const target = e.target as HTMLImageElement;
-              if (target.src !== fallbackProductImg) {
-                target.src = fallbackProductImg;
-              }
-            }}
-            alt={`Rosa Balm Stick ${i + 1}`}
-            className={`h-full object-contain filter drop-shadow-md transition-transform ${
-              count === 4 ? 'w-1/4 max-w-24' : count === 2 ? 'w-1/2 max-w-32' : 'w-40'
-            }`}
-            loading="lazy"
-            referrerPolicy="no-referrer"
-          />
-        ))}
+      <div className="flex items-center justify-center h-64 sm:h-72 my-2">
+        <img
+          src={`/assets/${filename}`}
+          onError={e => { e.currentTarget.onerror = null; e.currentTarget.src = fallback; }}
+          alt={`Kit com ${count} ${count === 1 ? 'bastão' : 'bastões'} Medicube Pink Collagen Balm`}
+          className="w-full h-full object-contain drop-shadow-md"
+          loading="lazy"
+        />
       </div>
     );
   };
