@@ -1,0 +1,6 @@
+{
+  "name": "Rosa Balm - Hidratação e Luminosidade em Bastão",
+  "description": "Landing page oficial de apresentação do Rosa Balm, um balm facial prático em bastão para complementar sua rotina diária de skincare com luminosidade natural.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
