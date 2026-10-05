@@ -7,34 +7,18 @@ import React, { useState } from 'react';
 import { Truck } from 'lucide-react';
 import { productConfig } from '../config/productConfig';
 import { useCart } from '../context/CartContext';
-
+import fallbackProductImg from '../assets/images/rosa_balm_hero_1791199906964.jpg';
 
 export const OfferSection: React.FC = () => {
-  const { addItem, openDrawer } = useCart();
+  const { selectTier, openDrawer } = useCart();
   const [selectedTier, setSelectedTier] = useState<'single' | 'kit_duo' | 'kit_quad'>('kit_duo');
 
   const { single, kitDuo, kitQuad } = productConfig.tiers;
+  const { productIsolated, productKit2, productKit4 } = productConfig.assets;
 
   const handleSelectAndAdd = (tierId: 'single' | 'kit_duo' | 'kit_quad') => {
     setSelectedTier(tierId);
-    addItem(tierId);
-  };
-
-  // Each bundle uses one compact product image, avoiding gaps between separate files.
-  const renderSticks = (count: number) => {
-    const filename = count === 1 ? 'product-isolated.png' : `product-kit-${count}.png`;
-    const fallback = `https://lpgzamgqjcoicmostfln.supabase.co/storage/v1/object/public/product-artwork/${filename}`;
-    return (
-      <div className="flex items-center justify-center h-64 sm:h-72 my-2">
-        <img
-          src={`/assets/${filename}`}
-          onError={e => { e.currentTarget.onerror = null; e.currentTarget.src = fallback; }}
-          alt={`Kit com ${count} ${count === 1 ? 'bastão' : 'bastões'} Medicube Pink Collagen Balm`}
-          className="w-full h-full object-contain drop-shadow-md"
-          loading="lazy"
-        />
-      </div>
-    );
+    selectTier(tierId);
   };
 
   return (
@@ -67,8 +51,22 @@ export const OfferSection: React.FC = () => {
                 <span className="text-xs text-stone-500 font-medium">(10g)</span>
               </div>
 
-              {/* Physical Product Display: 1 isolated stick */}
-              {renderSticks(1)}
+              {/* Physical Product Display: 1 isolated stick in h-64 sm:h-72 */}
+              <div className="flex items-center justify-center h-64 sm:h-72 py-1 my-2 overflow-hidden">
+                <img
+                  src={productIsolated}
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    if (target.src !== fallbackProductImg) {
+                      target.src = fallbackProductImg;
+                    }
+                  }}
+                  alt="Rosa Balm 1 Stick (10g)"
+                  className="w-full h-full object-contain filter drop-shadow-md"
+                  loading="lazy"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
 
               {/* Price & Free Shipping */}
               <div className="text-center mt-3 mb-4">
@@ -85,6 +83,8 @@ export const OfferSection: React.FC = () => {
             <div className="pt-2">
               <button
                 type="button"
+                name="select-1-stick"
+                aria-pressed={selectedTier === 'single'}
                 onClick={(e) => {
                   e.stopPropagation();
                   handleSelectAndAdd('single');
@@ -109,7 +109,7 @@ export const OfferSection: React.FC = () => {
                 : 'border-rose-300 hover:border-rose-400 shadow-sm'
             }`}
           >
-            {/* Top Pill: EXACTLY "Kit em destaque" (NO Mais Vendido, NO Most Popular) */}
+            {/* Top Pill: EXACTLY "Kit em destaque" */}
             <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-rose-600 text-white text-[11px] font-bold uppercase tracking-wider px-4 py-1 rounded-full shadow-xs whitespace-nowrap">
               Kit em destaque
             </div>
@@ -120,8 +120,22 @@ export const OfferSection: React.FC = () => {
                 <span className="text-xs text-stone-500 font-medium">(20g total)</span>
               </div>
 
-              {/* Physical Product Display: 2 separate isolated sticks */}
-              {renderSticks(2)}
+              {/* Physical Product Display: single combined PNG for 2 sticks in h-64 sm:h-72 */}
+              <div className="flex items-center justify-center h-64 sm:h-72 py-1 my-2 overflow-hidden">
+                <img
+                  src={productKit2}
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    if (target.src !== fallbackProductImg) {
+                      target.src = fallbackProductImg;
+                    }
+                  }}
+                  alt="Rosa Balm Kit 2 Sticks (20g total)"
+                  className="w-full h-full object-contain filter drop-shadow-md"
+                  loading="lazy"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
 
               {/* Price & Free Shipping */}
               <div className="text-center mt-3 mb-4">
@@ -141,6 +155,8 @@ export const OfferSection: React.FC = () => {
             <div className="pt-2">
               <button
                 type="button"
+                name="select-2-sticks"
+                aria-pressed={selectedTier === 'kit_duo'}
                 onClick={(e) => {
                   e.stopPropagation();
                   handleSelectAndAdd('kit_duo');
@@ -167,8 +183,22 @@ export const OfferSection: React.FC = () => {
                 <span className="text-xs text-stone-500 font-medium">(40g total)</span>
               </div>
 
-              {/* Physical Product Display: 4 separate isolated sticks */}
-              {renderSticks(4)}
+              {/* Physical Product Display: single combined PNG for 4 sticks in h-64 sm:h-72 */}
+              <div className="flex items-center justify-center h-64 sm:h-72 py-1 my-2 overflow-hidden">
+                <img
+                  src={productKit4}
+                  onError={(e) => {
+                    const target = e.target as HTMLImageElement;
+                    if (target.src !== fallbackProductImg) {
+                      target.src = fallbackProductImg;
+                    }
+                  }}
+                  alt="Rosa Balm Kit 4 Sticks (40g total)"
+                  className="w-full h-full object-contain filter drop-shadow-md"
+                  loading="lazy"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
 
               {/* Price & Free Shipping - Menor preço unitário */}
               <div className="text-center mt-3 mb-4">
@@ -188,6 +218,8 @@ export const OfferSection: React.FC = () => {
             <div className="pt-2">
               <button
                 type="button"
+                name="select-4-sticks"
+                aria-pressed={selectedTier === 'kit_quad'}
                 onClick={(e) => {
                   e.stopPropagation();
                   handleSelectAndAdd('kit_quad');
@@ -204,7 +236,7 @@ export const OfferSection: React.FC = () => {
           </div>
         </div>
 
-        {/* Free Shipping to the United States Box (Inspired by Card 10 bottom bar) */}
+        {/* Free Shipping to the United States Box */}
         <div className="mt-8 p-4 rounded-2xl bg-white/90 border border-rose-200/90 text-stone-700 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs shadow-2xs">
           <div className="flex items-center gap-2">
             <span className="w-7 h-7 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center shrink-0">

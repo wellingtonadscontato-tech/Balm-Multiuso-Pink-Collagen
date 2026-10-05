@@ -7,10 +7,10 @@ import React from 'react';
 import { ShoppingBag, Truck } from 'lucide-react';
 import { productConfig } from '../config/productConfig';
 import { useCart } from '../context/CartContext';
-const heroThumb = '/assets/product-isolated.png';
+import heroThumb from '../assets/images/rosa_balm_hero_1791199906964.jpg';
 
 export const StickyBottomBar: React.FC = () => {
-  const { totalCount, openDrawer } = useCart();
+  const { totalSticksCount, openDrawer } = useCart();
 
   return (
     <div
@@ -22,10 +22,16 @@ export const StickyBottomBar: React.FC = () => {
         {/* Left: Product preview thumbnail & price in US standard */}
         <div className="flex items-center gap-3 min-w-0">
           <img
-            src={heroThumb}
+            src={productConfig.assets.productIsolated}
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              if (target.src !== heroThumb) {
+                target.src = heroThumb;
+              }
+            }}
             alt="Rosa Balm - Imagem ilustrativa"
             title="Imagem ilustrativa"
-            className="w-10 h-10 rounded-xl object-cover border border-rose-100 shrink-0 hidden xs:block"
+            className="w-10 h-10 rounded-xl object-contain border border-rose-100 shrink-0 hidden xs:block bg-rose-50/50 p-0.5"
             referrerPolicy="no-referrer"
           />
           <div className="truncate">
@@ -58,9 +64,9 @@ export const StickyBottomBar: React.FC = () => {
             className="p-2.5 rounded-xl border border-rose-200 text-stone-700 bg-white hover:text-rose-600 transition-colors relative"
           >
             <ShoppingBag className="w-4 h-4" />
-            {totalCount > 0 && (
+            {totalSticksCount > 0 && (
               <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-rose-600 text-white text-[9px] font-bold flex items-center justify-center">
-                {totalCount}
+                {totalSticksCount}
               </span>
             )}
           </button>

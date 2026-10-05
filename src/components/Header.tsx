@@ -9,7 +9,7 @@ import { productConfig } from '../config/productConfig';
 import { useCart } from '../context/CartContext';
 
 export const Header: React.FC = () => {
-  const { totalCount, openDrawer } = useCart();
+  const { totalSticksCount, openDrawer } = useCart();
 
   return (
     <header className="sticky top-0 z-40 w-full bg-[#FAF6F7]/90 backdrop-blur-md border-b border-rose-100/70 transition-all">
@@ -58,9 +58,9 @@ export const Header: React.FC = () => {
           >
             <ShoppingBag className="w-5 h-5" />
             <span className="text-xs font-semibold hidden xs:inline">Carrinho</span>
-            {totalCount > 0 && (
+            {totalSticksCount > 0 && (
               <span className="w-5 h-5 rounded-full bg-rose-600 text-white text-[11px] font-bold flex items-center justify-center animate-scale-in">
-                {totalCount}
+                {totalSticksCount}
               </span>
             )}
           </button>

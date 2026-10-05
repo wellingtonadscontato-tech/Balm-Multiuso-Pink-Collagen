@@ -3,6 +3,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { shopifyCheckout } from './shopifyCheckout';
+export { shopifyCheckout };
+
 export interface ProductTier {
   id: 'single' | 'kit_duo' | 'kit_quad';
   title: string;
@@ -17,18 +20,6 @@ export interface ProductTier {
   features: string[];
 }
 
-export interface GalleryArt {
-  id: number;
-  filename: string;
-  src: string;
-  fallbackSrc: string;
-  title: string;
-  tag: string;
-  alt: string;
-  isComparisonArte6?: boolean;
-  comparisonNote?: string;
-}
-
 export interface ProductConfig {
   brand: {
     name: string;
@@ -37,7 +28,6 @@ export interface ProductConfig {
     currency: string;
     currencySymbol: string;
     referenceProduct: string;
-    storeDisclaimer: string;
   };
   hero: {
     kicker: string;
@@ -58,7 +48,19 @@ export interface ProductConfig {
     kitDuo: ProductTier;
     kitQuad: ProductTier;
   };
-  gallery: GalleryArt[];
+  assets: {
+    heroArt: string; // 01-art-en.png
+    applicationArt: string; // 02-art-en.png
+    ingredientsArt: string; // 03-art-en.png
+    areasArt: string; // 04-art-en.png
+    productArt: string; // 05-art-en.png
+    portabilityArt: string; // 07-art-en.png
+    textureArt: string; // 08-art-en.png
+    routineArt: string; // 09-art-en-v2.png
+    productIsolated: string; // product-isolated.png
+    productKit2: string; // product-kit-2.png
+    productKit4: string; // product-kit-4.png
+  };
   productDetails: {
     overview: string;
     formulaHighlights: string[];
@@ -67,14 +69,6 @@ export interface ProductConfig {
     usageInstructions: string;
     precautions: string;
     packageContent: string;
-  };
-  benefits: {
-    title: string;
-    subtitle: string;
-    items: {
-      title: string;
-      description: string;
-    }[];
   };
   routine: {
     title: string;
@@ -126,11 +120,11 @@ export interface ProductConfig {
   disclaimers: {
     prototypeNotice: string;
     shippingNotice: string;
-    referenceNotice: string;
-    arteNotice: string;
     copyright: string;
   };
 }
+
+const SUPABASE_BASE_URL = 'https://lpgzamgqjcoicmostfln.supabase.co/storage/v1/object/public/product-artwork/';
 
 export const productConfig: ProductConfig = {
   brand: {
@@ -140,8 +134,6 @@ export const productConfig: ProductConfig = {
     currency: 'USD',
     currencySymbol: '$',
     referenceProduct: 'Medicube PDRN Pink Collagen Volume Multi Balm 10g',
-    storeDisclaimer:
-      'Rosa Balm é uma loja independente de curadoria. Este protótipo utiliza o produto Medicube PDRN Pink Collagen Volume Multi Balm 10g como referência de catálogo e especificações, sem vínculo oficial de representação, revenda autorizada ou parceria com a marca fabricante.',
   },
   hero: {
     kicker: 'K-Beauty · Cuidados Faciais',
@@ -162,10 +154,23 @@ export const productConfig: ProductConfig = {
       'Frete Grátis incluso para todos os pedidos nos EUA',
     ],
   },
+  assets: {
+    heroArt: `${SUPABASE_BASE_URL}01-art-en.png`,
+    applicationArt: `${SUPABASE_BASE_URL}02-art-en.png`,
+    ingredientsArt: `${SUPABASE_BASE_URL}03-art-en.png`,
+    areasArt: `${SUPABASE_BASE_URL}04-art-en.png`,
+    productArt: `${SUPABASE_BASE_URL}05-art-en.png`,
+    portabilityArt: `${SUPABASE_BASE_URL}07-art-en.png`,
+    textureArt: `${SUPABASE_BASE_URL}08-art-en.png`,
+    routineArt: `${SUPABASE_BASE_URL}09-art-en-v2.png`,
+    productIsolated: `${SUPABASE_BASE_URL}product-isolated.png`,
+    productKit2: `${SUPABASE_BASE_URL}product-kit-2.png`,
+    productKit4: `${SUPABASE_BASE_URL}product-kit-4.png`,
+  },
   tiers: {
     single: {
       id: 'single',
-      title: '1 Stick (10g)',
+      title: '1 Stick',
       badge: 'Individual',
       quantity: 1,
       unitWeight: '10g',
@@ -183,10 +188,10 @@ export const productConfig: ProductConfig = {
     },
     kitDuo: {
       id: 'kit_duo',
-      title: '2 Sticks (20g total)',
+      title: '2 Sticks',
       badge: 'Kit em destaque',
       quantity: 2,
-      unitWeight: '2x 10g (20g total)',
+      unitWeight: '20g total',
       price: 34.99,
       pricePerUnitText: '$17.50 / unidade',
       shippingText: 'Free Shipping',
@@ -201,12 +206,12 @@ export const productConfig: ProductConfig = {
     },
     kitQuad: {
       id: 'kit_quad',
-      title: '4 Sticks (40g total)',
+      title: '4 Sticks',
       badge: 'Super Econômico',
       quantity: 4,
-      unitWeight: '4x 10g (40g total)',
+      unitWeight: '40g total',
       price: 59.99,
-      pricePerUnitText: '$15.00 / unidade (Menor preço por grama)',
+      pricePerUnitText: '$15.00 / unidade',
       shippingText: 'Free Shipping',
       shippingCost: 0,
       buttonText: 'Escolher 4 Sticks',
@@ -218,92 +223,6 @@ export const productConfig: ProductConfig = {
       ],
     },
   },
-  gallery: [
-    {
-      id: 1,
-      filename: '01-art-en.png',
-      src: '/assets/01-art-en.png',
-      fallbackSrc: 'https://lpgzamgqjcoicmostfln.supabase.co/storage/v1/object/public/product-artwork/01-art-en.png',
-      title: 'Instant Hydration & Natural Glow',
-      tag: '01 · Visão Geral',
-      alt: 'Art 01: Instant Hydration & Natural Glow - Medicube Multi-Use Balm',
-    },
-    {
-      id: 2,
-      filename: '02-art-en.png',
-      src: '/assets/02-art-en.png',
-      fallbackSrc: 'https://lpgzamgqjcoicmostfln.supabase.co/storage/v1/object/public/product-artwork/02-art-en.png',
-      title: 'Glides On Smoothly',
-      tag: '02 · Sensorial',
-      alt: 'Art 02: Glides On Smoothly - A lightweight non-greasy balm',
-    },
-    {
-      id: 3,
-      filename: '03-art-en.png',
-      src: '/assets/03-art-en.png',
-      fallbackSrc: 'https://lpgzamgqjcoicmostfln.supabase.co/storage/v1/object/public/product-artwork/03-art-en.png',
-      title: 'Powerful Ingredients',
-      tag: '03 · Ativos',
-      alt: 'Art 03: Powerful Ingredients for Healthier-Looking Skin (PDRN, Collagen, Hyaluronic Acid)',
-    },
-    {
-      id: 4,
-      filename: '04-art-en.png',
-      src: '/assets/04-art-en.png',
-      fallbackSrc: 'https://lpgzamgqjcoicmostfln.supabase.co/storage/v1/object/public/product-artwork/04-art-en.png',
-      title: 'Multi-Use Balm Areas',
-      tag: '04 · Áreas de Aplicação',
-      alt: 'Art 04: Multi-Use Balm - Under eyes, forehead, cheeks, smile lines, neck, lips',
-    },
-    {
-      id: 5,
-      filename: '05-art-en.png',
-      src: '/assets/05-art-en.png',
-      fallbackSrc: 'https://lpgzamgqjcoicmostfln.supabase.co/storage/v1/object/public/product-artwork/05-art-en.png',
-      title: 'Pink Collagen Balm Splash',
-      tag: '05 · Embalagem & Textura',
-      alt: 'Art 05: Medicube 5% Volufiline PDRN Pink Collagen Volume Multi Balm stick with water splash',
-    },
-    {
-      id: 6,
-      filename: '06-art-en.png',
-      src: '/assets/06-art-en.png',
-      fallbackSrc: 'https://lpgzamgqjcoicmostfln.supabase.co/storage/v1/object/public/product-artwork/06-art-en.png',
-      title: 'Visibly Smoother Radiant Skin',
-      tag: '06 · Referência de Layout',
-      alt: 'Art 06: Layout visual de comparação - Apenas para prévia de layout',
-      isComparisonArte6: true,
-      comparisonNote:
-        'Comparação ilustrativa de layout; não representa resultado clínico ou depoimento validado. Disponível apenas nesta prévia.',
-    },
-    {
-      id: 7,
-      filename: '07-art-en.png',
-      src: '/assets/07-art-en.png',
-      fallbackSrc: 'https://lpgzamgqjcoicmostfln.supabase.co/storage/v1/object/public/product-artwork/07-art-en.png',
-      title: 'Perfect for On-the-Go',
-      tag: '07 · Portabilidade',
-      alt: 'Art 07: Perfect for On-the-Go - Compact, travel-friendly and easy to use',
-    },
-    {
-      id: 8,
-      filename: '08-art-en.png',
-      src: '/assets/08-art-en.png',
-      fallbackSrc: 'https://lpgzamgqjcoicmostfln.supabase.co/storage/v1/object/public/product-artwork/08-art-en.png',
-      title: 'A Silky, Lightweight Texture',
-      tag: '08 · Textura',
-      alt: 'Art 08: A Silky, Lightweight Texture - Melts into skin without feeling sticky or greasy',
-    },
-    {
-      id: 9,
-      filename: '09-art-en.png',
-      src: '/assets/09-art-en.png',
-      fallbackSrc: 'https://lpgzamgqjcoicmostfln.supabase.co/storage/v1/object/public/product-artwork/09-art-en-v2.png',
-      title: 'Glow Anytime, Anywhere',
-      tag: '09 · Rotina',
-      alt: 'Art 09: Glow Anytime, Anywhere - Simple, effective, beautifully you',
-    },
-  ],
   productDetails: {
     overview:
       'Medicube PDRN Pink Collagen Volume Multi Balm 10g. Bálsamo facial e corporal coreano em formato de bastão, desenvolvido para proporcionar hidratação prática e cuidado direcionado às áreas com ressecamento, linhas finas e aparência de perda de volume. Sua fórmula combina PDRN, colágeno, Volufiline, NAD, peptídeos, retinol, cafeína, vitamina E e ácido hialurônico. A textura suave derrete ao entrar em contato com a pele, desliza facilmente e proporciona acabamento hidratado e luminoso sem sensação pesada ou pegajosa.',
@@ -344,33 +263,6 @@ export const productConfig: ProductConfig = {
     precautions:
       'Uso externo. Evite contato direto com os olhos. Em caso de irritação suspenda uso. Mantenha fora do alcance de crianças, local fresco longe do sol.',
     packageContent: '1 balm de 10g por unidade.',
-  },
-  benefits: {
-    title: 'Cuidado direcionado com formato em bastão',
-    subtitle:
-      'Desenvolvido para proporcionar hidratação prática e cuidado direcionado às áreas com ressecamento, linhas finas e perda de volume.',
-    items: [
-      {
-        title: 'Hidratação e Áreas Secas',
-        description:
-          'Ajuda a hidratar profundamente áreas secas do rosto e corpo com acabamento suave e luminoso.',
-      },
-      {
-        title: 'Aparência Firme e Preenchida',
-        description:
-          'Auxilia no cuidado da aparência de linhas finas e promove aspecto mais firme e revitalizado.',
-      },
-      {
-        title: 'Textura Suave e Não Pegajosa',
-        description:
-          'Fórmula que derrete suavemente ao entrar em contato com a pele, deslizando com extrema facilidade.',
-      },
-      {
-        title: 'Praticidade para Retoques',
-        description:
-          'Formato prático em bastão de 10g ideal para levar na bolsa e reaplicar ao longo do dia.',
-      },
-    ],
   },
   routine: {
     title: 'Momentos ideais de aplicação',
@@ -445,12 +337,7 @@ export const productConfig: ProductConfig = {
       {
         question: 'Como funciona o envio para os Estados Unidos?',
         answer:
-          'Todos os pedidos contam com Frete Grátis para todo o território dos EUA. Os prazos oficiais de entrega encontram-se em confirmação com a cadeia logística.',
-      },
-      {
-        question: 'A loja Rosa Balm é o fabricante oficial da Medicube?',
-        answer:
-          'Não. A Rosa Balm atua como loja de curadoria independente. Não afirmamos representação exclusiva, parceria corporativa, revenda autorizada ou autenticidade além do produto apresentado como referência visual e técnica.',
+          'Todos os pedidos contam com Frete Grátis para todo o território dos EUA. Prazo de entrega a confirmar.',
       },
     ],
   },
@@ -478,12 +365,9 @@ export const productConfig: ProductConfig = {
   },
   disclaimers: {
     prototypeNotice:
-      'Protótipo em ambiente de revisão prévia para o mercado dos EUA. O módulo de checkout permanece desativado até confirmação definitiva do fornecimento real. Nenhum pagamento é processado.',
+      'Protótipo em ambiente de revisão prévia para o mercado dos EUA. O checkout permanece desativado até confirmação do fornecimento real. Nenhum pagamento é processado.',
     shippingNotice:
       'Frete Grátis garantido para os Estados Unidos em todos os kits (1, 2 e 4 unidades).',
-    referenceNotice:
-      'As especificações e dados do produto baseiam-se na descrição pública do Medicube PDRN Pink Collagen Volume Multi Balm 10g e servem como referência de produto, sem validação formal de fornecedor ou representação oficial da marca.',
-    arteNotice: 'Arte ilustrativa baseada na referência do produto.',
-    copyright: '© 2026 Rosa Balm. Protótipo de e-commerce para os EUA.',
+    copyright: '© 2026 Rosa Balm. Todos os direitos reservados.',
   },
 };

@@ -6,18 +6,16 @@
 import React from 'react';
 import { CartProvider } from './context/CartContext';
 import { Header } from './components/Header';
-import { ArtworkSection } from './components/ProductGallery';
 import { Hero } from './components/Hero';
-import { ProductAccordion } from './components/ProductAccordion';
 import { OfferSection } from './components/OfferSection';
-import { BenefitsSection } from './components/BenefitsSection';
-import { DemonstrationSection } from './components/DemonstrationSection';
+import { ShowcaseSections } from './components/ShowcaseSections';
 import { HowToUseSection } from './components/HowToUseSection';
+import { ProductAccordion } from './components/ProductAccordion';
 import { FAQSection } from './components/FAQSection';
 import { FinalCTA } from './components/FinalCTA';
 import { Footer } from './components/Footer';
 import { CartDrawer } from './components/CartDrawer';
-import { CheckoutModal } from './components/CheckoutModal';
+import { EmbeddedCheckoutModal } from './components/EmbeddedCheckoutModal';
 import { StickyBottomBar } from './components/StickyBottomBar';
 
 export default function App() {
@@ -28,51 +26,42 @@ export default function App() {
         <Header />
 
         <main className="flex-1">
-          {/* Hero Section with Interactive 10-Image Gallery */}
+          {/* 1. Hero: Apresentação com imagem grande destacada (Arte 01) sem carrossel */}
           <Hero />
 
-          {/* Offer Section (3 selectable tiers in USD) */}
+          {/* 2. Kits de Oferta Interativa (Cards 1, 2, 4 com bastões ~240px e gap zero) */}
           <OfferSection />
 
-          {/* Benefits Section */}
-          <ArtworkSection id={2} />
-          <BenefitsSection />
-          <ArtworkSection id={4} />
+          {/* 3. Artes Grandes Distribuídas pelas seções (Arte 02, Arte 04, Arte 05, Arte 07, Arte 08, Arte 09 v2) */}
+          <ShowcaseSections />
 
-          {/* Routine & Demonstration */}
-          <DemonstrationSection />
-
-          {/* How to use */}
+          {/* 4. Modo de Uso Recomendado */}
           <HowToUseSection />
-          <ArtworkSection id={8} />
-          <ArtworkSection id={9} />
 
-          {/* Expandable Product Specifications below gallery */}
-          <section className="py-8 sm:py-10 bg-white/70 border-b border-rose-100/60">
-            <div className="max-w-5xl mx-auto px-4 sm:px-6">
+          {/* 5. Ingredientes Poderosos (Arte 03) + Ficha Técnica Expansível antes do FAQ */}
+          <section className="py-12 sm:py-16 bg-white/70 border-y border-rose-100/60">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6">
               <ProductAccordion />
             </div>
           </section>
 
-
-          <ArtworkSection id={3} />
-          {/* FAQ Section */}
+          {/* 6. FAQ Section */}
           <FAQSection />
 
-          {/* Final Call to Action */}
+          {/* 7. Final Call to Action */}
           <FinalCTA />
         </main>
 
-        {/* Clean Simplified Footer with Catalog Reference Note */}
+        {/* Rodapé Limpo */}
         <Footer />
 
-        {/* Global Slide-Over Cart Drawer with 3-tier support */}
+        {/* Carrinho Lateral com miniatura real do produto isolado em cada linha */}
         <CartDrawer />
 
-        {/* Disconnected Staging Checkout Modal */}
-        <CheckoutModal />
+        {/* Modal de Checkout Incorporado Stripe Oficial */}
+        <EmbeddedCheckoutModal />
 
-        {/* Sticky Buy Bar for Mobile & Desktop */}
+        {/* Barra Fixa Inferior de Compra */}
         <StickyBottomBar />
       </div>
     </CartProvider>

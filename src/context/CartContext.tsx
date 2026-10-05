@@ -21,6 +21,7 @@ export interface CartItem {
 interface CartContextType {
   items: CartItem[];
   addItem: (tierId: 'single' | 'kit_duo' | 'kit_quad') => void;
+  selectTier: (tierId: 'single' | 'kit_duo' | 'kit_quad') => void;
   updateQuantity: (id: string, delta: number) => void;
   removeItem: (id: string) => void;
   clearCart: () => void;
@@ -34,6 +35,7 @@ interface CartContextType {
   shippingTotal: number;
   total: number;
   totalCount: number;
+  totalSticksCount: number;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -42,6 +44,40 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [items, setItems] = useState<CartItem[]>([]);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [isCheckoutModalOpen, setIsCheckoutModalOpen] = useState(false);
+
+  const getTierConfig = (tierId: 'single' | 'kit_duo' | 'kit_quad'): ProductTier => {
+    if (tierId === 'single') return productConfig.tiers.single;
+    if (tierId === 'kit_duo') return productConfig.tiers.kitDuo;
+    return productConfig.tiers.kitQuad;
+  };
+
+  // Selects a tier from the offer cards, setting it cleanly in the cart
+  const selectTier = (tierId: 'single' | 'kit_duo' | 'kit_quad') => {
+    const tier = getTierConfig(tierId);
+    const existing = items.find((item) => item.id === tierId);
+
+    if (existing) {
+      // If already present, ensure quantity is at least 1
+      setIsDrawerOpen(true);
+      return;
+    }
+
+    const newItem: CartItem = {
+      id: tierId,
+      title: tier.title,
+      badge: tier.badge,
+      quantityUnits: tier.quantity,
+      unitWeight: tier.unitWeight,
+      unitPrice: tier.price,
+      quantity: 1,
+      shippingCost: 0,
+      shippingText: 'Free (EUA)',
+    };
+
+    // Replace previous selection with newly chosen tier so user isn't stuck with old tier
+    setItems([newItem]);
+    setIsDrawerOpen(true);
+  };
 
   const addItem = (tierId: 'single' | 'kit_duo' | 'kit_quad') => {
     setItems((prev) => {
@@ -52,15 +88,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         );
       }
 
-      let tier: ProductTier;
-      if (tierId === 'single') {
-        tier = productConfig.tiers.single;
-      } else if (tierId === 'kit_duo') {
-        tier = productConfig.tiers.kitDuo;
-      } else {
-        tier = productConfig.tiers.kitQuad;
-      }
-
+      const tier = getTierConfig(tierId);
       const newItem: CartItem = {
         id: tierId,
         title: tier.title,
@@ -124,11 +152,16 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     return items.reduce((acc, item) => acc + item.quantity, 0);
   }, [items]);
 
+  const totalSticksCount = useMemo(() => {
+    return items.reduce((acc, item) => acc + item.quantity * item.quantityUnits, 0);
+  }, [items]);
+
   return (
     <CartContext.Provider
       value={{
         items,
         addItem,
+        selectTier,
         updateQuantity,
         removeItem,
         clearCart,
@@ -142,6 +175,7 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         shippingTotal,
         total,
         totalCount,
+        totalSticksCount,
       }}
     >
       {children}

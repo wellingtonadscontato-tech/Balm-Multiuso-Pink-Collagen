@@ -6,12 +6,12 @@
 import React from 'react';
 import { ArrowDown, Check, Sparkles, Truck } from 'lucide-react';
 import { productConfig } from '../config/productConfig';
-import { ProductGallery } from './ProductGallery';
+import fallbackHero from '../assets/images/rosa_balm_hero_1791199906964.jpg';
 
 export const Hero: React.FC = () => {
   return (
     <section className="relative overflow-hidden pt-8 pb-12 sm:pt-12 sm:pb-16 border-b border-rose-100/60 bg-gradient-to-b from-[#FFF8F9] to-[#FAF5F7]">
-      {/* Subtle organic ambient glow */}
+      {/* Ambient glow */}
       <div
         aria-hidden="true"
         className="absolute top-1/4 -right-24 w-96 h-96 bg-rose-200/30 rounded-full blur-3xl pointer-events-none"
@@ -22,9 +22,9 @@ export const Hero: React.FC = () => {
       />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
-          {/* Left Column: Copy & CTAs */}
-          <div className="lg:col-span-6 flex flex-col items-start text-left">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+          {/* Copy & CTAs: Order 2 on mobile (below image), Order 1 on desktop (left) */}
+          <div className="lg:col-span-6 flex flex-col items-start text-left order-2 lg:order-1">
             {/* Kicker */}
             <div className="inline-flex items-center gap-2 text-xs font-semibold text-rose-700 tracking-wide uppercase mb-3">
               <Sparkles className="w-3.5 h-3.5 text-rose-500" />
@@ -63,7 +63,7 @@ export const Hero: React.FC = () => {
               ))}
             </div>
 
-            {/* Pricing Highlight Pill & CTA */}
+            {/* CTAs */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 w-full sm:w-auto mb-4">
               <a
                 href="#ofertas"
@@ -80,7 +80,7 @@ export const Hero: React.FC = () => {
               </a>
             </div>
 
-            {/* Quiet Unboxed Metadata (USD format & Free Shipping) */}
+            {/* Metadata (USD format & Free Shipping) */}
             <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs text-stone-500">
               <span className="font-semibold text-stone-800">A partir de $24.99 USD</span>
               <span aria-hidden="true">·</span>
@@ -92,9 +92,23 @@ export const Hero: React.FC = () => {
             </div>
           </div>
 
-          {/* Right Column: Interactive 10-Image Gallery Configuration */}
-          <div className="lg:col-span-6 flex justify-center">
-            <ProductGallery />
+          {/* Featured Presentation of Arte 01: Order 1 on mobile (at the very top), Order 2 on desktop (right) */}
+          <div className="lg:col-span-6 flex justify-center w-full order-1 lg:order-2 mb-2 lg:mb-0">
+            <div className="-mx-4 sm:mx-0 w-[calc(100%+2rem)] sm:w-full max-w-lg lg:max-w-xl sm:rounded-3xl overflow-hidden sm:shadow-xl flex items-center justify-center">
+              <img
+                src={productConfig.assets.heroArt}
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  if (target.src !== fallbackHero) {
+                    target.src = fallbackHero;
+                  }
+                }}
+                alt="Medicube PDRN Pink Collagen Volume Multi Balm - Instant Hydration & Natural Glow"
+                className="w-full h-auto object-cover sm:object-contain block"
+                loading="eager"
+                referrerPolicy="no-referrer"
+              />
+            </div>
           </div>
         </div>
       </div>

@@ -27,20 +27,14 @@ export const Footer: React.FC = () => {
           </div>
 
           <nav className="flex flex-wrap items-center gap-5 text-stone-400">
+            <a href="#ofertas" className="hover:text-rose-300 transition-colors">
+              Ofertas (USD)
+            </a>
             <a href="#especificacoes" className="hover:text-rose-300 transition-colors">
               Especificações
             </a>
-            <a href="#beneficios" className="hover:text-rose-300 transition-colors">
-              Benefícios
-            </a>
-            <a href="#demonstracao" className="hover:text-rose-300 transition-colors">
-              Rotina
-            </a>
             <a href="#como-usar" className="hover:text-rose-300 transition-colors">
               Como Usar
-            </a>
-            <a href="#ofertas" className="hover:text-rose-300 transition-colors">
-              Ofertas (USD)
             </a>
             <a href="#duvidas" className="hover:text-rose-300 transition-colors">
               FAQ
@@ -48,7 +42,8 @@ export const Footer: React.FC = () => {
           </nav>
         </div>
 
-        {/* Copyright & Info */}
+<a href="mailto:contato@balmmultiusopinkcollagen.shop" className="block text-rose-300 hover:text-white break-all">contato@balmmultiusopinkcollagen.shop</a>
+        {/* Real Shipping Info & Copyright */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-stone-500 text-[11px]">
           <div>{productConfig.disclaimers.copyright}</div>
           <div className="flex items-center gap-3">
@@ -63,3 +58,4 @@ export const Footer: React.FC = () => {
     </footer>
   );
 };
+
