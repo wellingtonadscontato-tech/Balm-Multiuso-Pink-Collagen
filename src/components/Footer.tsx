@@ -48,17 +48,6 @@ export const Footer: React.FC = () => {
           </nav>
         </div>
 
-        {/* Short Prototype & Reference Disclaimer */}
-        <div className="p-3.5 rounded-xl bg-stone-950/70 border border-stone-800/80 text-stone-400 text-[11px] leading-relaxed space-y-2">
-          <p>
-            <strong className="text-stone-300">Nota de Catálogo & Referência: </strong>
-            {productConfig.brand.storeDisclaimer} {productConfig.disclaimers.referenceNotice}
-          </p>
-          <p className="text-stone-500">
-            {productConfig.disclaimers.prototypeNotice}
-          </p>
-        </div>
-
         {/* Copyright & Info */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3 text-stone-500 text-[11px]">
           <div>{productConfig.disclaimers.copyright}</div>

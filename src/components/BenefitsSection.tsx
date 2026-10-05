@@ -70,13 +70,6 @@ export const BenefitsSection: React.FC = () => {
                   loading="lazy"
                   referrerPolicy="no-referrer"
                 />
-                {/* Discrete Arte ilustrativa label */}
-                <div className="absolute bottom-3 left-3 bg-white/95 backdrop-blur-md px-3 py-1 rounded-xl border border-rose-100/80 shadow-xs flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-rose-500" />
-                  <span className="text-[11px] font-medium text-stone-700">
-                    Arte ilustrativa baseada na referência do produto
-                  </span>
-                </div>
               </div>
               <div className="p-5 w-full bg-white/95 backdrop-blur-xs border-t border-rose-100 rounded-b-2xl mt-2">
                 <div className="text-xs font-bold text-rose-700 uppercase tracking-wider mb-1">

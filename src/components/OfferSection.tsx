@@ -23,7 +23,7 @@ export const OfferSection: React.FC = () => {
   // Helper component to render physical isolated product sticks
   const renderSticks = (count: number) => {
     return (
-      <div className="flex items-center justify-center gap-1.5 h-36 sm:h-44 py-2 my-2">
+      <div className="flex items-center justify-center gap-0 h-60 sm:h-64 py-0 my-2">
         {Array.from({ length: count }).map((_, i) => (
           <img
             key={i}
@@ -36,7 +36,7 @@ export const OfferSection: React.FC = () => {
             }}
             alt={`Rosa Balm Stick ${i + 1}`}
             className={`h-full object-contain filter drop-shadow-md transition-transform ${
-              count === 4 ? 'w-11 sm:w-14' : count === 2 ? 'w-16 sm:w-20' : 'w-20 sm:w-24'
+              count === 4 ? 'w-1/4 max-w-24' : count === 2 ? 'w-1/2 max-w-32' : 'w-40'
             }`}
             loading="lazy"
             referrerPolicy="no-referrer"

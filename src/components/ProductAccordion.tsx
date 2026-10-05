@@ -23,7 +23,7 @@ export const ProductAccordion: React.FC = () => {
     }));
   };
 
-  const { productDetails, brand, disclaimers } = productConfig;
+  const { productDetails, brand } = productConfig;
 
   return (
     <div id="especificacoes" className="w-full bg-white rounded-3xl border border-rose-100/90 shadow-sm p-5 sm:p-7">
@@ -31,14 +31,12 @@ export const ProductAccordion: React.FC = () => {
       <div className="mb-6 pb-5 border-b border-stone-100">
         <div className="inline-flex items-center gap-2 text-xs font-semibold text-rose-700 tracking-wider uppercase mb-1.5">
           <Sparkles className="w-3.5 h-3.5 text-rose-500" />
-          <span>Ficha Técnica & Referência</span>
+          <span>Detalhes do Produto</span>
         </div>
         <h3 className="text-xl sm:text-2xl font-bold text-stone-900">
           Especificações do Produto ({brand.referenceProduct})
         </h3>
-        <p className="text-xs sm:text-sm text-stone-500 mt-1">
-          Informações descritivas de referência correspondentes ao catálogo da marca para o mercado norte-americano.
-        </p>
+
       </div>
 
       <div className="space-y-3">
@@ -244,18 +242,6 @@ export const ProductAccordion: React.FC = () => {
         </div>
       </div>
 
-      {/* Discrete Reference Note */}
-      <div className="mt-5 p-3.5 rounded-2xl bg-stone-50 border border-stone-200/80 text-[11px] text-stone-500 leading-relaxed flex items-start gap-2">
-        <HeartHandshake className="w-4 h-4 text-stone-400 shrink-0 mt-0.5" />
-        <div>
-          <span>
-            {disclaimers.referenceNotice}
-          </span>
-          <div className="mt-1 text-stone-400">
-            Referência oficial: <span className="font-mono text-[10px]">medicube.us/products/pdrn-pink-collagen-volume-multi-balm</span>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };

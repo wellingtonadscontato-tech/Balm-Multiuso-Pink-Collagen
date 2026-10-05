@@ -82,7 +82,7 @@ export const CartDrawer: React.FC = () => {
               <div className="space-y-4">
                 {items.map((item) => (
                   <div key={item.id} className="pt-4 first:pt-0">
-                    <div className="flex items-start justify-between gap-3 mb-2">
+                    <div className="flex items-start justify-between gap-3 mb-2">                      <img src="/assets/product-isolated.png" alt="Medicube Pink Collagen Balm" className="w-20 h-24 shrink-0 object-contain rounded-xl bg-rose-50" onError={e => { e.currentTarget.onerror = null; e.currentTarget.src = 'https://lpgzamgqjcoicmostfln.supabase.co/storage/v1/object/public/product-artwork/product-isolated.png'; }} />
                       <div>
                         {item.badge && (
                           <span className="text-[10px] font-bold text-rose-700 uppercase tracking-wider block mb-0.5">

@@ -6,6 +6,7 @@
 import React from 'react';
 import { CartProvider } from './context/CartContext';
 import { Header } from './components/Header';
+import { ArtworkSection } from './components/ProductGallery';
 import { Hero } from './components/Hero';
 import { ProductAccordion } from './components/ProductAccordion';
 import { OfferSection } from './components/OfferSection';
@@ -30,6 +31,22 @@ export default function App() {
           {/* Hero Section with Interactive 10-Image Gallery */}
           <Hero />
 
+          {/* Offer Section (3 selectable tiers in USD) */}
+          <OfferSection />
+
+          {/* Benefits Section */}
+          <ArtworkSection id={2} />
+          <BenefitsSection />
+          <ArtworkSection id={4} />
+
+          {/* Routine & Demonstration */}
+          <DemonstrationSection />
+
+          {/* How to use */}
+          <HowToUseSection />
+          <ArtworkSection id={8} />
+          <ArtworkSection id={9} />
+
           {/* Expandable Product Specifications below gallery */}
           <section className="py-8 sm:py-10 bg-white/70 border-b border-rose-100/60">
             <div className="max-w-5xl mx-auto px-4 sm:px-6">
@@ -37,18 +54,8 @@ export default function App() {
             </div>
           </section>
 
-          {/* Offer Section (3 selectable tiers in USD) */}
-          <OfferSection />
 
-          {/* Benefits Section */}
-          <BenefitsSection />
-
-          {/* Routine & Demonstration */}
-          <DemonstrationSection />
-
-          {/* How to use */}
-          <HowToUseSection />
-
+          <ArtworkSection id={3} />
           {/* FAQ Section */}
           <FAQSection />
 
