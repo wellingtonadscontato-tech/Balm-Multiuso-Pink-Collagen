@@ -6,7 +6,7 @@
 import React from 'react';
 import { Droplet, Sparkles, Feather, ShieldCheck } from 'lucide-react';
 import { productConfig } from '../config/productConfig';
-import textureImage from '../assets/images/rosa_balm_texture_1791199926096.jpg';
+const textureImage = 'https://lpgzamgqjcoicmostfln.supabase.co/storage/v1/object/public/product-artwork/05-art-en.png';
 
 export const BenefitsSection: React.FC = () => {
   const benefitIcons = [Droplet, Sparkles, Feather, ShieldCheck];
@@ -80,7 +80,7 @@ export const BenefitsSection: React.FC = () => {
               </div>
               <div className="p-5 w-full bg-white/95 backdrop-blur-xs border-t border-rose-100 rounded-b-2xl mt-2">
                 <div className="text-xs font-bold text-rose-700 uppercase tracking-wider mb-1">
-                  Art 05 · Embalagem & Textura
+                  Embalagem & Textura
                 </div>
                 <h4 className="text-base font-bold text-stone-900 mb-1">
                   Pink Collagen Balm Splash

@@ -7,7 +7,7 @@ import React from 'react';
 import { ShoppingBag, Truck } from 'lucide-react';
 import { productConfig } from '../config/productConfig';
 import { useCart } from '../context/CartContext';
-import heroThumb from '../assets/images/rosa_balm_hero_1791199906964.jpg';
+const heroThumb = '/assets/product-isolated.png';
 
 export const StickyBottomBar: React.FC = () => {
   const { totalCount, openDrawer } = useCart();

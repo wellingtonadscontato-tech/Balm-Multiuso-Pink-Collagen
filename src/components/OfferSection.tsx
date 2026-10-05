@@ -7,7 +7,7 @@ import React, { useState } from 'react';
 import { Truck } from 'lucide-react';
 import { productConfig } from '../config/productConfig';
 import { useCart } from '../context/CartContext';
-import fallbackProductImg from '../assets/images/rosa_balm_hero_1791199906964.jpg';
+const fallbackProductImg = 'https://lpgzamgqjcoicmostfln.supabase.co/storage/v1/object/public/product-artwork/product-isolated.png';
 
 export const OfferSection: React.FC = () => {
   const { addItem, openDrawer } = useCart();

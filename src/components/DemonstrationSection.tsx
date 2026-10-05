@@ -6,7 +6,7 @@
 import React from 'react';
 import { Sun, Clock, Moon, Sparkles } from 'lucide-react';
 import { productConfig } from '../config/productConfig';
-import applicationImage from '../assets/images/rosa_balm_application_1791199941551.jpg';
+const applicationImage = 'https://lpgzamgqjcoicmostfln.supabase.co/storage/v1/object/public/product-artwork/07-art-en.png';
 
 export const DemonstrationSection: React.FC = () => {
   const periodIcons = [Sun, Clock, Moon];
@@ -44,7 +44,7 @@ export const DemonstrationSection: React.FC = () => {
               {/* Discreet Quote / Note */}
               <div className="p-4 w-full bg-white border-t border-rose-100 rounded-b-2xl mt-2">
                 <div className="text-xs font-bold text-rose-700 uppercase tracking-wider mb-0.5">
-                  Art 07 · Portabilidade
+                  Portabilidade
                 </div>
                 <p className="text-xs text-stone-600">
                   Formato compacto de 10g ideal para viagem, academia, trabalho e retoques diários.

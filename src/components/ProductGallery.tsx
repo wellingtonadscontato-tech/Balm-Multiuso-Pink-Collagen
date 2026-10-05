@@ -9,7 +9,9 @@ import { productConfig } from '../config/productConfig';
 
 export const ProductGallery: React.FC = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const gallery = productConfig.gallery;
+  const gallery = productConfig.gallery.filter(
+    (art) => !art.isComparisonArte6 || import.meta.env.DEV,
+  );
   const currentItem = gallery[currentIndex];
 
   const handlePrev = () => {
@@ -39,15 +41,6 @@ export const ProductGallery: React.FC = () => {
           referrerPolicy="no-referrer"
         />
 
-        {/* Top-Right Badge: Slide Counter (1 of 9) */}
-        <div className="absolute top-4 right-4 flex items-center gap-2">
-          <span className="bg-stone-900/80 backdrop-blur-md text-white text-[11px] font-semibold px-2.5 py-1 rounded-full tabular-nums">
-            {currentIndex + 1} / {gallery.length}
-          </span>
-          <span className="bg-white/95 backdrop-blur-md text-stone-700 text-[11px] font-semibold px-2.5 py-1 rounded-full border border-rose-100 hidden xs:inline-block">
-            {currentItem.tag}
-          </span>
-        </div>
 
         {/* Comparison Disclaimer for Arte 6 */}
         {currentItem.isComparisonArte6 && (
@@ -91,6 +84,8 @@ export const ProductGallery: React.FC = () => {
             <button
               key={art.id}
               type="button"
+              aria-label={art.title}
+              aria-pressed={isActive}
               onClick={() => setCurrentIndex(index)}
               className={`relative shrink-0 w-13 h-16 sm:w-15 sm:h-18 rounded-xl overflow-hidden border-2 transition-all cursor-pointer bg-white p-0.5 ${
                 isActive
@@ -111,9 +106,6 @@ export const ProductGallery: React.FC = () => {
                 loading="lazy"
                 referrerPolicy="no-referrer"
               />
-              <span className="absolute bottom-0.5 right-1 text-[9px] font-bold text-white bg-stone-900/80 px-1 rounded tabular-nums">
-                {index + 1}
-              </span>
             </button>
           );
         })}
